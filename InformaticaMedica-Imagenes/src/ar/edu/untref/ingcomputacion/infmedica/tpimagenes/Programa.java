@@ -10,6 +10,9 @@ import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
+
 public class Programa {
 
 	private static final String RUTA_IMAGEN = "resources/radiografia.jpg";
@@ -31,7 +34,19 @@ public class Programa {
 	public static void main(String[] args) {
 		
 		RenderedImage imagenOriginal = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, RUTA_IMAGEN);
+		//guardarEnBaseDeDatos(imagenOriginal);
 		aplicarFiltro(imagenOriginal, JAI_OPERADOR_DETECCION_DE_BORDES);
+	}
+
+	private static void guardarEnBaseDeDatos(RenderedImage imagenOriginal) {
+		
+		ImagenMedica imagenMedica = new ImagenMedica();
+		imagenMedica.setId(1);
+		imagenMedica.setDescripcion("La descripcion");
+		imagenMedica.setImagenBase64("ABCDE");
+		
+		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
+		administrador.guardar(imagenMedica);
 	}
 
 	private static void aplicarFiltro(RenderedImage imagenOriginal, String filtro) {

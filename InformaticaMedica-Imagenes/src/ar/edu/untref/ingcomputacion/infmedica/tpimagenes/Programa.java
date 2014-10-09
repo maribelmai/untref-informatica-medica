@@ -34,14 +34,14 @@ public class Programa {
 	public static void main(String[] args) {
 		
 		RenderedImage imagenOriginal = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, RUTA_IMAGEN);
-		//guardarEnBaseDeDatos(imagenOriginal);
+		guardarEnBaseDeDatos(imagenOriginal);
 		aplicarFiltro(imagenOriginal, JAI_OPERADOR_DETECCION_DE_BORDES);
 	}
 
 	private static void guardarEnBaseDeDatos(RenderedImage imagenOriginal) {
 		
 		ImagenMedica imagenMedica = new ImagenMedica();
-		imagenMedica.setId(1);
+		imagenMedica.setId(18);
 		imagenMedica.setDescripcion("La descripcion");
 		imagenMedica.setImagenBase64("ABCDE");
 		
@@ -71,7 +71,7 @@ public class Programa {
 			System.out.println("Imagen guardada exitosamente con nombre: " + nombreImagen);
 			
 		}catch (IOException e) {
-			System.err.println("Ocurrió un error guardando la imagen: " + e);
+			System.err.println("Ocurriï¿½ un error guardando la imagen: " + e);
 		}
 	}
 

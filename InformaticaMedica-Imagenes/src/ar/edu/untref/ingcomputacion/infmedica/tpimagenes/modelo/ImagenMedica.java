@@ -19,13 +19,14 @@ public class ImagenMedica {
 		this.id = id;
 	}
 	
-	@Column
+	@Column(length=10485760)
 	public String getImagenBase64() {
 		return imagenBase64;
 	}
 	public void setImagenBase64(String imagenBase64) {
 		this.imagenBase64 = imagenBase64;
 	}
+	
 	
 	@Column
 	public String getDescripcion() {

@@ -6,7 +6,9 @@
    <persistence-unit name="ImagenesMedicasPersistenceProvider" transaction-type="RESOURCE_LOCAL">
    
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
       <class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica</class>
+
       <properties>
          <property name="hibernate.connection.username" value="root" />
          <property name="hibernate.connection.password" value="root" />

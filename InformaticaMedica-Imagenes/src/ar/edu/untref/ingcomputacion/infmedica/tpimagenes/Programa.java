@@ -27,6 +27,8 @@ public class Programa {
 
 	// Filtros
 	private static final String JAI_OPERADOR_DETECCION_DE_BORDES = "GradientMagnitude";
+	private static final long ID_IMAGEN = System.currentTimeMillis();
+	private static String base64APersistir;
 
 	static {
 		inicializar();
@@ -56,7 +58,7 @@ public class Programa {
 			throws IOException {
 
 		ImagenMedica imagenMedica = new ImagenMedica();
-		imagenMedica.setId(System.currentTimeMillis());
+		imagenMedica.setId(ID_IMAGEN);
 		imagenMedica.setDescripcion("La descripcion");
 
 		File imagen = new File("resources/radiografia.jpg");
@@ -64,8 +66,8 @@ public class Programa {
 		WritableRaster raster = buffer.getRaster();
 		DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
 
-		String base64 = Base64.encode(data.getData());
-		imagenMedica.setImagenBase64(base64);
+		base64APersistir = Base64.encode(data.getData());
+		imagenMedica.setImagenBase64(base64APersistir);
 
 		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
 		administrador.guardar(imagenMedica);
@@ -73,6 +75,16 @@ public class Programa {
 
 	private static void recuperarImagenDeLaBaseDeDatos() {
 
+		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
+		
+		ImagenMedica imagenRecuperada = administrador.obtener(ID_IMAGEN);
+		
+		if (imagenRecuperada.getImagenBase64().equals(base64APersistir)) {
+			System.out.println("La imágen recuperada es idéntica a la persistida");
+			
+		} else {
+			System.out.println("Existen diferencias entre la imágen recuperada de la BBDD y la persistida");
+		}
 		
 	}
 

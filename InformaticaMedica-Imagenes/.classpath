@@ -17,6 +17,7 @@
 	<classpathentry kind="lib" path="libs/hibernate-commons-annotations-3.2.0.Final.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="lib" path="libs/hibernate-commons-annotations-4.0.5.Final.jar"/>
+	<classpathentry kind="lib" path="libs/antlr-4.4-complete.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

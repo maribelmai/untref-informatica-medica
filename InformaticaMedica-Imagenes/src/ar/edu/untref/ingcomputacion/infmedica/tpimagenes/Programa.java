@@ -13,10 +13,10 @@ import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Programa {
 
@@ -27,7 +27,6 @@ public class Programa {
 
 	// Filtros
 	private static final String JAI_OPERADOR_DETECCION_DE_BORDES = "GradientMagnitude";
-	private static final long ID_IMAGEN = System.currentTimeMillis();
 	private static String base64APersistir;
 
 	static {
@@ -58,7 +57,6 @@ public class Programa {
 			throws IOException {
 
 		ImagenMedica imagenMedica = new ImagenMedica();
-		imagenMedica.setId(ID_IMAGEN);
 		imagenMedica.setDescripcion("La descripcion");
 
 		File imagen = new File("resources/radiografia.jpg");
@@ -74,17 +72,17 @@ public class Programa {
 	}
 
 	private static void recuperarImagenDeLaBaseDeDatos() {
-
-		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
-		
-		ImagenMedica imagenRecuperada = administrador.obtener(ID_IMAGEN);
-		
-		if (imagenRecuperada.getImagenBase64().equals(base64APersistir)) {
-			System.out.println("La imágen recuperada es idéntica a la persistida");
-			
-		} else {
-			System.out.println("Existen diferencias entre la imágen recuperada de la BBDD y la persistida");
-		}
+//
+//		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
+//		
+//		ImagenMedica imagenRecuperada = administrador.obtener(ID_IMAGEN);
+//		
+//		if (imagenRecuperada.getImagenBase64().equals(base64APersistir)) {
+//			System.out.println("La imágen recuperada es idéntica a la persistida");
+//			
+//		} else {
+//			System.out.println("Existen diferencias entre la imágen recuperada de la BBDD y la persistida");
+//		}
 		
 	}
 

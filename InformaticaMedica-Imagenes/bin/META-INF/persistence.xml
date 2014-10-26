@@ -9,9 +9,11 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
 		<class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica</class>
+		<class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.Paciente</class>
+		<class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.Estudio</class>
 
 		<properties>
-			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="root" />
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/inf-medica" />
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />

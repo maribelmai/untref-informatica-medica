@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-   
-   <persistence-unit name="ImagenesMedicasPersistenceProvider" transaction-type="RESOURCE_LOCAL">
-   
-      <provider>org.hibernate.ejb.HibernatePersistence</provider>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
-      <class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica</class>
+	<persistence-unit name="ImagenesMedicasPersistenceProvider"
+		transaction-type="RESOURCE_LOCAL">
 
-      <properties>
-         <property name="hibernate.connection.username" value="root" />
-         <property name="hibernate.connection.password" value="root" />
-         <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/inf-medica" />
-         <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect" />
-         <property name="hibernate.hbm2ddl.auto" value="update" />
-      </properties>
-   </persistence-unit>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<class>ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica</class>
+
+		<properties>
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/inf-medica" />
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
+
 </persistence>

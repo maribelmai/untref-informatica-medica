@@ -1,19 +1,14 @@
 package ar.edu.untref.ingcomputacion.infmedica.tpimagenes.servicios;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.xml.ws.soap.AddressingFeature.Responses;
 
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;

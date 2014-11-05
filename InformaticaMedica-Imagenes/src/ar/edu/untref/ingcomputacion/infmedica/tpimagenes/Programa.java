@@ -7,6 +7,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -65,12 +66,16 @@ public class Programa {
 		imagenMedica.setDescripcion("La descripcion");
 
 		File imagen = new File("resources/radiografia.jpg");
-		BufferedImage buffer = ImageIO.read(imagen);
-		WritableRaster raster = buffer.getRaster();
-		DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+		// Reading a Image file from file system
+        FileInputStream imageInFile = new FileInputStream(imagen);
+        byte imageData[] = new byte[(int) imagen.length()];
+        imageInFile.read(imageData);
 
-		base64APersistir = Base64.encode(data.getData());
-		imagenMedica.setImagenBase64(base64APersistir);
+        // Converting Image byte array into Base64 String
+        String imageDataString = Base64.encode(imageData);
+		imagenMedica.setImagenBase64(imageDataString);
+		
+		System.out.println(imageDataString);
 
 		AdministradorImagenesMedicas administrador = new AdministradorImagenesMedicas();
 		administrador.guardar(imagenMedica);

@@ -21,7 +21,7 @@
 		<br>		
 		<br>
 		
-		<img id="imagenMedica" style="height: 400px; width: 400px" />
+		<img id="imagenMedica" style="height: 100%; width: 400px" />
 		
 	</body>
 

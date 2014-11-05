@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -54,10 +55,12 @@ public class Servicio {
 		ImagenMedica imagenMedica = new ImagenMedica();
 		imagenMedica.setDescripcion(descripcion);
 
-		BufferedImage buffer = ImageIO.read(imagen);
-		WritableRaster raster = buffer.getRaster();
-		DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-		imagenMedica.setImagenBase64(Base64.encode(data.getData()));
+        FileInputStream fis = new FileInputStream(imagen);
+        byte imageData[] = new byte[(int) imagen.length()];
+        fis.read(imageData);
+        String imagenBase64 = Base64.encode(imageData);
+        fis.close();
+		imagenMedica.setImagenBase64(imagenBase64);
 		
 		administrador.guardar(imagenMedica);
 		return imagenMedica;

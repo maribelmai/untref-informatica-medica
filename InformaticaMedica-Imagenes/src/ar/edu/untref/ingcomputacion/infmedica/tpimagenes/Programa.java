@@ -10,8 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.media.jai.Histogram;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
 
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
@@ -20,7 +22,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Programa {
 
-	private static final String RUTA_IMAGEN = "resources/radiografia.jpg";
+	private static final String RUTA_IMAGEN = "resources/prueba.png";
 	private static final String JAI_OPERADOR_CARGA_IMAGEN = "fileload";
 	private static final String OUTPUT_RUTA = "resources/output";
 	private static final String OUTPUT_EXTENSION_IMAGEN = "jpg";
@@ -51,6 +53,7 @@ public class Programa {
 		}
 		
 		aplicarFiltro(imagenOriginal, JAI_OPERADOR_DETECCION_DE_BORDES);
+		crearHistograma();
 	}
 
 	private static void guardarEnBaseDeDatos(RenderedImage imagenOriginal)
@@ -128,4 +131,49 @@ public class Programa {
 
 		return nombreArchivoBuilder.toString();
 	}
+	
+	private static void crearHistograma() {
+		
+		RenderedImage imagenOriginal = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, RUTA_IMAGEN);
+		RenderedOp op = JAI.create("histogram", imagenOriginal, null);
+        Histogram histogram = (Histogram) op.getProperty("histogram");
+
+        RenderedImage imagenOriginalRadiografia = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, "resources/radiografia.jpg");
+		RenderedOp opRadiografia = JAI.create("histogram", imagenOriginalRadiografia, null);
+        Histogram histogramRadiografia = (Histogram) opRadiografia.getProperty("histogram");
+        
+        System.out.println("Comparo la imagen con si misma: " + compararHistogramas(histogram, histogram));
+        
+        System.out.println("Comparo dos imagenes distintas: " + compararHistogramas(histogram, histogramRadiografia));
+        
+        double[] mean = histogram.getMean();
+        double[] mean2 = histogramRadiografia.getMean();
+        
+        System.out.println("Holis");
+	}
+	
+	/**
+	 * Indica si los dos histogramas dados son idénticos
+	 */
+	private static boolean compararHistogramas(Histogram primero, Histogram segundo) {
+		
+		// Tienen la misma cantidad de contenedores
+		boolean sonIguales = primero.getBins().length == segundo.getBins().length;
+		
+		for (int contenedor = 0 ; contenedor < primero.getBins().length && sonIguales ; contenedor++) {
+			
+			// Tienen la misma cantidad de bandas
+			sonIguales = primero.getBins(contenedor).length == segundo.getBins(contenedor).length;
+			
+			for (int banda = 0 ; banda < primero.getBins(contenedor).length && sonIguales ; banda++) {
+			
+				// Tienen la misma cantidad de pixeles para esa banda, en ese contenedor
+				sonIguales = primero.getBins(contenedor)[banda] == segundo.getBins(contenedor)[banda];
+			}
+			
+		}
+
+		return sonIguales;
+	}
+	
 }

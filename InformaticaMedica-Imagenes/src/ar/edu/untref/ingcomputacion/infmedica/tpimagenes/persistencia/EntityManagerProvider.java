@@ -17,5 +17,4 @@ public class EntityManagerProvider {
 	public static EntityManager getEntityManager() {
 		return entityManager;
 	}
-
 }

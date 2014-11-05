@@ -1,5 +1,6 @@
 package ar.edu.untref.ingcomputacion.infmedica.tpimagenes;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.RenderedImage;
@@ -18,6 +19,7 @@ import javax.media.jai.RenderedOp;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
 
+import com.sun.media.jai.codec.PNGEncodeParam.RGB;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Programa {

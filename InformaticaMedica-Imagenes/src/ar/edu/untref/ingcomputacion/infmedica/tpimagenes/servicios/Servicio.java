@@ -3,17 +3,20 @@ package ar.edu.untref.ingcomputacion.infmedica.tpimagenes.servicios;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
+import javax.media.jai.Histogram;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.Programa;
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.ManipuladorDeImagenes;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
 
+import com.google.gson.Gson;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 @Path("/")
@@ -60,7 +63,7 @@ public class Servicio {
 			String base64 = null;
 			
 			try {
-				base64 = Programa.aplicarFiltro(ruta, filtro);
+				base64 = ManipuladorDeImagenes.aplicarFiltro(ruta, filtro);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -85,7 +88,7 @@ public class Servicio {
 		
 		if (imagen.exists()) {
 			
-			double[] colores = Programa.obtenerColorPromedio(ruta);
+			double[] colores = ManipuladorDeImagenes.obtenerColorPromedio(ruta);
 			response.entity("rgb(" + Math.round(colores[0]) + "," + Math.round(colores[1]) + "," + Math.round(colores[2]) + ")");
 		}
 		else {
@@ -94,7 +97,50 @@ public class Servicio {
 		
 		return response.build();
 	}
-
+	
+	@Path("comparar")
+	@GET
+	public Response comparar(@QueryParam(value = "ruta") String ruta,
+							@QueryParam(value = "rutaImagenAComparar") String rutaImagenAComparar) {
+		
+		ResponseBuilder response = Response.status(Response.Status.OK);
+		
+		File imagen = new File(ruta);
+		
+		if (imagen.exists()) {
+			
+			Histogram histograma1 = ManipuladorDeImagenes.crearHistograma(ruta);
+			Histogram histograma2 = ManipuladorDeImagenes.crearHistograma(rutaImagenAComparar);
+			
+			response.entity(ManipuladorDeImagenes.compararHistogramas(histograma1, histograma2));
+		}
+		else {
+			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");
+		}
+		
+		return response.build();
+	}
+	
+	@Path("generarHistograma")
+	@GET
+	public Response generarHistograma(@QueryParam(value = "ruta") String ruta) {
+		
+		ResponseBuilder response = Response.status(Response.Status.OK);
+		
+		File imagen = new File(ruta);
+		
+		if (imagen.exists()) {
+			
+			Histogram histograma = ManipuladorDeImagenes.crearHistograma(ruta);
+			String json = new Gson().toJson(Arrays.asList(histograma.getBins()));
+			response.entity(json);
+		}
+		else {
+			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");
+		}
+		
+		return response.build();
+	}
 
 	private ImagenMedica guardar(File imagen, String descripcion) throws IOException {
 		

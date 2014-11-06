@@ -16,9 +16,13 @@ $(document).ready(function() {
 		    
 		    success: function(data){ 
 		    	
-		    	$("#cargando").hide();
 		    	mostrarImagenGuardada(data);
 		    	mostrarCodigoBase64(data);
+		    	mostrarColorPromedio();
+
+
+		    	$("#cargando").hide();
+		    	$("#camposImagenCargada").show();
 		    },
 		    error: function(data) {
 		    	
@@ -33,9 +37,51 @@ $(document).ready(function() {
 	$("#renderizarBase64").click(function() {
 		
 		$("#imagenMedica").attr('src', 'data:image/png;base64,' + $("#base64").val());
-		
+	});
+
+	$("#detectarBordes").click(function() {
+
+    	$("#imagenFiltrada").hide();
+		var ruta = $("#ruta").val();
+
+		$.ajax({
+		    url: "http://localhost:8080/ImagenesMedicas/rest/aplicarFiltro?ruta=" + escape(ruta) + "&filtro=GradientMagnitude",
+		    type: 'GET',
+		    
+		    success: function(data){ 
+
+		    	$("#imagenFiltrada").attr('src', 'data:image/png;base64,' + data.replace("\n",""));
+		    	$("#imagenFiltrada").show();
+		    },
+		    error: function(data) {
+		    	
+		    	alert("Ocurrio un error detectando los bordes de la imagen.");
+		    }
+		});
 	});
 	
+
+	$("#invertir").click(function() {
+
+    	$("#imagenFiltrada").hide();
+		var ruta = $("#ruta").val();
+
+		$.ajax({
+		    url: "http://localhost:8080/ImagenesMedicas/rest/aplicarFiltro?ruta=" + escape(ruta) + "&filtro=Invert",
+		    type: 'GET',
+		    
+		    success: function(data){ 
+
+		    	$("#imagenFiltrada").attr('src', 'data:image/png;base64,' + data.replace("\n",""));
+		    	$("#imagenFiltrada").show();
+		    },
+		    error: function(data) {
+		    	
+		    	alert("Ocurrio un error detectando los bordes de la imagen.");
+		    }
+		});
+	});
+
 });
 
 function mostrarImagenGuardada(data) {
@@ -46,6 +92,23 @@ function mostrarImagenGuardada(data) {
 function mostrarCodigoBase64(data) {
 	
 	$("#base64").val(data.replace("\n",""));
-	$("#base64").show();
-	$("#renderizarBase64").show();
+}
+
+function mostrarColorPromedio() {
+	
+	var ruta = $("#ruta").val();
+	
+	$.ajax({
+	    url: "http://localhost:8080/ImagenesMedicas/rest/obtenerColorPromedio?ruta=" + escape(ruta),
+	    type: 'GET',
+	    
+	    success: function(data){ 
+	    	
+	    	$("#colorPromedio").css("background-color", data);
+	    },
+	    error: function(data) {
+	    	
+	    	alert("Ocurrio un error calculando el color promedio.");
+	    }
+	});
 }

@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.Programa;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
 
@@ -44,6 +45,56 @@ public class Servicio {
 		
 		return response.build();
 	}
+	
+	@Path("aplicarFiltro")
+	@GET
+	public Response aplicarFiltro(@QueryParam(value = "ruta") String ruta,
+										@QueryParam(value= "filtro") String filtro) {
+		
+		ResponseBuilder response = Response.status(Response.Status.OK);
+		
+		File imagen = new File(ruta);
+		
+		if (imagen.exists()) {
+			
+			String base64 = null;
+			
+			try {
+				base64 = Programa.aplicarFiltro(ruta, filtro);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			response.entity(base64);
+		}
+		else {
+			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");
+		}
+		
+		return response.build();
+	}
+	
+	@Path("obtenerColorPromedio")
+	@GET
+	public Response obtenerColorPromedio(@QueryParam(value = "ruta") String ruta) {
+		
+		ResponseBuilder response = Response.status(Response.Status.OK);
+		
+		File imagen = new File(ruta);
+		
+		if (imagen.exists()) {
+			
+			double[] colores = Programa.obtenerColorPromedio(ruta);
+			response.entity("rgb(" + Math.round(colores[0]) + "," + Math.round(colores[1]) + "," + Math.round(colores[2]) + ")");
+		}
+		else {
+			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");
+		}
+		
+		return response.build();
+	}
+
 
 	private ImagenMedica guardar(File imagen, String descripcion) throws IOException {
 		

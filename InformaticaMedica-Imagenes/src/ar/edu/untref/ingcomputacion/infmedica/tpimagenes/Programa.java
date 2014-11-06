@@ -1,15 +1,15 @@
 package ar.edu.untref.ingcomputacion.infmedica.tpimagenes;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.awt.image.RenderedImage;
-import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.Histogram;
@@ -20,12 +20,11 @@ import javax.media.jai.RenderedOp;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
 
-import com.sun.media.jai.codec.PNGEncodeParam.RGB;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Programa {
 
-	private static final String RUTA_IMAGEN = "resources/prueba.png";
+	private static final String RUTA_IMAGEN = "resources/radiografia.jpg";
 	private static final String JAI_OPERADOR_CARGA_IMAGEN = "fileload";
 	private static final String OUTPUT_RUTA = "resources/output";
 	private static final String OUTPUT_EXTENSION_IMAGEN = "jpg";
@@ -55,7 +54,7 @@ public class Programa {
 		} catch (IOException e) {
 		}
 		
-		aplicarFiltro(imagenOriginal, JAI_OPERADOR_DETECCION_DE_BORDES);
+//		aplicarFiltro(RUTA_IMAGEN, JAI_OPERADOR_DETECCION_DE_BORDES);
 		crearHistograma();
 	}
 
@@ -97,14 +96,32 @@ public class Programa {
 	}
 
 	
-	private static void aplicarFiltro(RenderedImage imagenOriginal,
-			String filtro) {
+	public static String aplicarFiltro(String ruta, String filtro) throws IOException {
 
 		System.out.println("Aplicando filtro...");
-		PlanarImage imagenInvertida = JAI.create(filtro, imagenOriginal);
-		BufferedImage bufferedImage = imagenInvertida.getAsBufferedImage();
+		
+		RenderedImage imagenOriginal = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, ruta);
+		PlanarImage imagenFiltrada = JAI.create(filtro, imagenOriginal);
+		BufferedImage bufferedImage = imagenFiltrada.getAsBufferedImage();
+		
+//		ByteArrayOutputStream os = new ByteArrayOutputStream();
+//		ImageIO.write(bufferedImage, "jpg", os);
+//		InputStream is = new ByteArrayInputStream(os.toByteArray());
+//		
+//		File imagen = new File(ruta);
+//        FileInputStream imageInFile = new FileInputStream(imagen);
+//        byte imageData[] = new byte[(int) imagen.length()];
+//        is.read(imageData);
 
-		guardarImagen(bufferedImage);
+        // Converting Image byte array into Base64 String
+//        String imageDataString = Base64.encode(imageData);
+        
+        //CUCU
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "jpg", out);
+        byte[] bytes = out.toByteArray();
+
+        return Base64.encode(bytes);
 	}
 
 	private static void guardarImagen(BufferedImage bufferedImage) {
@@ -181,6 +198,15 @@ public class Programa {
 		}
 
 		return sonIguales;
+	}
+
+	public static double[] obtenerColorPromedio(String ruta) {
+
+		RenderedImage imagenOriginal = JAI.create(JAI_OPERADOR_CARGA_IMAGEN, ruta);
+		RenderedOp op = JAI.create("histogram", imagenOriginal, null);
+        Histogram histogram = (Histogram) op.getProperty("histogram");
+
+        return histogram.getMean();
 	}
 	
 }

@@ -23,6 +23,10 @@
 		
 		<img id="imagenMedica" style="height: 100%; width: 400px" />
 		
+		<textarea id="base64" rows="12" cols="100" style="display:none;float:right;"></textarea>
+		<br>
+		<button id="renderizarBase64" style="display:none;float:right;">Renderizar</button>
+		
 	</body>
 
 </html>

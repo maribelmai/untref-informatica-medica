@@ -1,5 +1,3 @@
-var dataTest;
-
 $(document).ready(function() {
 	
 	//CARGAR IMAGEN
@@ -20,6 +18,7 @@ $(document).ready(function() {
 		    	
 		    	$("#cargando").hide();
 		    	mostrarImagenGuardada(data);
+		    	mostrarCodigoBase64(data);
 		    },
 		    error: function(data) {
 		    	
@@ -30,12 +29,23 @@ $(document).ready(function() {
 		    }
 		});
 	});
+	
+	$("#renderizarBase64").click(function() {
+		
+		$("#imagenMedica").attr('src', 'data:image/png;base64,' + $("#base64").val());
+		
+	});
+	
 });
 
 function mostrarImagenGuardada(data) {
 	
-	dataTest = data.replace("\n","");
+	$("#imagenMedica").attr('src', 'data:image/png;base64,' + data.replace("\n",""));
+}
+
+function mostrarCodigoBase64(data) {
 	
-	$("#imagenMedica")
-		.attr('src', 'data:image/png;base64,' + dataTest);
+	$("#base64").val(data.replace("\n",""));
+	$("#base64").show();
+	$("#renderizarBase64").show();
 }

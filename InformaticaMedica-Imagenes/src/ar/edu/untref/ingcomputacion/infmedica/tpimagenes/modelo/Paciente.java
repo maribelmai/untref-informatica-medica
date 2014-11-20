@@ -16,6 +16,18 @@ public class Paciente implements Serializable {
 	private long id;
 	private String nombre;
 	private String apellido;
+	private String dni;
+	
+	public Paciente() {
+	}
+	
+	public Paciente(String nombre, String apellido, String dni) {
+		
+		super();
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,5 +52,13 @@ public class Paciente implements Serializable {
 	}
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	
+	@Column
+	public String getDni() {
+		return dni;
+	}
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 }

@@ -43,7 +43,7 @@ public class Servicio {
 				ImagenMedica imagenMedica = guardar(imagen, descripcion);
 				response.entity(imagenMedica.getImagenBase64());
 			} catch (IOException e) {
-				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Ocurrió un problema al guardar la imagen");
+				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Ocurriï¿½ un problema al guardar la imagen");
 			}
 		}
 		else {
@@ -116,7 +116,7 @@ public class Servicio {
 			Histogram histograma1 = ManipuladorDeImagenes.crearHistograma(ruta);
 			Histogram histograma2 = ManipuladorDeImagenes.crearHistograma(rutaImagenAComparar);
 
-			response.entity(ManipuladorDeImagenes.compararHistogramas(histograma1, histograma2));
+			response.entity(ManipuladorDeImagenes.compararHistogramasIdenticamente(histograma1, histograma2));
 		}
 		else {
 			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");

@@ -3,6 +3,8 @@ package ar.edu.untref.ingcomputacion.infmedica.tpimagenes.servicios;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,8 +16,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.ManipuladorDeImagenes;
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.Estudio;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.Paciente;
+import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorEstudios;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorImagenesMedicas;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.persistencia.AdministradorPacientes;
 
@@ -27,6 +31,7 @@ public class Servicio {
 
 	private AdministradorImagenesMedicas administradorImagenesMedicas = new AdministradorImagenesMedicas();
 	private AdministradorPacientes administradorPacientes = new AdministradorPacientes();
+	private AdministradorEstudios administradorEstudios = new AdministradorEstudios();
 
 	@Path("seleccionarArchivo")
 	@GET
@@ -158,17 +163,54 @@ public class Servicio {
 
 		return response.build();
 	}
-	
+
+	@Path("estudios")
+	@GET
+	public Response obtenerEstudios(@QueryParam(value = "idPaciente") String idPaciente) {
+
+		ResponseBuilder response = Response.status(Response.Status.OK);
+
+		List<Estudio> estudios = administradorEstudios.obtenerEstudios(Long.valueOf(idPaciente));
+		String json = new Gson().toJson(estudios);
+		response.entity(json);
+
+		return response.build();
+	}
+
 	@Path("guardarPaciente")
 	@GET
 	public Response guardarPaciente(@QueryParam(value = "nombre") String nombre, 
-									@QueryParam(value = "apellido") String apellido,
-									@QueryParam(value = "dni") String dni) {
+			@QueryParam(value = "apellido") String apellido,
+			@QueryParam(value = "dni") String dni) {
 
 		ResponseBuilder response = Response.status(Response.Status.OK);
 
 		Paciente paciente = new Paciente(nombre, apellido, dni);
 		administradorPacientes.guardar(paciente);
+
+		return response.build();
+	}
+
+	@Path("guardarEstudio")
+	@GET
+	public Response guardarEstudio(@QueryParam(value = "fecha") String fecha, 
+			@QueryParam(value = "tipo") String tipo,
+			@QueryParam(value = "paciente") String idPaciente) {
+
+		ResponseBuilder response = Response.status(Response.Status.OK);
+
+		try {
+			Estudio estudio = new Estudio();
+			estudio.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
+			Paciente paciente = administradorPacientes.obtenerPaciente(Long.valueOf(idPaciente));
+			estudio.setTipo(tipo);
+			estudio.setPaciente(paciente);
+			administradorEstudios.guardar(estudio);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage());
+		}
 
 		return response.build();
 	}
@@ -188,7 +230,7 @@ public class Servicio {
 		administradorImagenesMedicas.guardar(imagenMedica);
 		return imagenMedica;
 	}
-	
+
 	@Path("distancia")
 	@GET
 	public Response distancia(@QueryParam(value = "ruta") String ruta,

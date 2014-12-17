@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.ImagenMedica;
 import ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo.Paciente;
 
 public class AdministradorPacientes {
@@ -32,5 +31,21 @@ public class AdministradorPacientes {
 		
 		em.getTransaction().commit();
 		return pacientes;
+	}
+
+	public Paciente obtenerPaciente(Long idPaciente) {
+		
+		EntityManager em = EntityManagerProvider.getEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Query query = em.createQuery("select p from Paciente p where p.id = :paramId");
+		query.setParameter("paramId", idPaciente);
+		
+		@SuppressWarnings("unchecked")
+		List<Paciente> pacientes = (List<Paciente>) query.getResultList();
+		
+		em.getTransaction().commit();
+		return pacientes.get(0);
 	}
 }

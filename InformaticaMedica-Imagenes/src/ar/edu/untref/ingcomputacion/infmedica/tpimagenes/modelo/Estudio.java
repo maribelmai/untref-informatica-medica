@@ -1,8 +1,10 @@
 package ar.edu.untref.ingcomputacion.infmedica.tpimagenes.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,10 @@ public class Estudio implements Serializable {
 	private static final long serialVersionUID = -4663366574758397460L;
 	
 	private long id;
+	private Date fecha;
 	private Paciente paciente;
+	private String tipo;
+	private int cantidadImagenes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,5 +38,29 @@ public class Estudio implements Serializable {
 	}
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
+	}
+	
+	@Column
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	
+	@Column
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	
+	@Column
+	public int getCantidadImagenes() {
+		return cantidadImagenes;
+	}
+	public void setCantidadImagenes(int cantidadImagenes) {
+		this.cantidadImagenes = cantidadImagenes;
 	}
 }

@@ -60,7 +60,7 @@ function mostrarPacientes(data) {
 		var dni = pacientes[i].dni;
 		var id = pacientes[i].id;
 
-		var tableRow = '<tr id="' + id + '"><td>' + nombre + '</td><td>' + apellido + '</td><td>' + dni + '</td><td><a href="http://localhost:8080/ImagenesMedicas/paciente/' + id + '">Ver estudios</a></td></tr>';
+		var tableRow = '<tr id="' + id + '"><td>' + nombre + '</td><td>' + apellido + '</td><td>' + dni + '</td><td><a href="http://localhost:8080/ImagenesMedicas/estudios.jsp?idPaciente=' + id + '">Ver estudios</a></td></tr>';
 		
 		$("#pacientesTable").find('tbody').append(tableRow);
 	}

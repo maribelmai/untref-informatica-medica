@@ -188,4 +188,24 @@ public class Servicio {
 		administradorImagenesMedicas.guardar(imagenMedica);
 		return imagenMedica;
 	}
+	
+	@Path("distancia")
+	@GET
+	public Response distancia(@QueryParam(value = "ruta") String ruta,
+			@QueryParam(value = "rutaImagenAComparar") String rutaImagenAComparar) {
+
+		ResponseBuilder response = Response.status(Response.Status.OK);
+
+		File imagen = new File(ruta);
+
+		if (imagen.exists()) {
+
+			response.entity(ManipuladorDeImagenes.calcularDistanciaEuclidea(ruta, rutaImagenAComparar));
+		}
+		else {
+			response = Response.status(Response.Status.PRECONDITION_FAILED).entity("La imagen no existe");
+		}
+
+		return response.build();
+	}
 }

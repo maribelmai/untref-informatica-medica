@@ -49,6 +49,10 @@
 		<h3>Comparar mediante histogramas</h3>
 		Ruta de la segunda imagen: <input type="text" id="rutaImagenAComparar"> <br>
 		<button id="comparar">Comparar</button>
+		
+		<h3>Calcular distancia euclídea</h3>
+		Ruta de la segunda imagen: <input type="text" id="rutaImagenACalcularDistancia"> <br>
+		<button id="calcularDistancia">Calcular distancai</button>
 	</div>
 </body>
 

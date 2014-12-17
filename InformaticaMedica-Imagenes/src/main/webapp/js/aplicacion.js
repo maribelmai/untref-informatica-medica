@@ -122,6 +122,27 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$("#calcularDistancia").click(function() {
+
+		var ruta = $("#ruta").val();
+		var rutaImagenAComparar = $("#rutaImagenACalcularDistancia").val();
+
+		$.ajax({
+			url: "http://localhost:8080/ImagenesMedicas/rest/distancia?ruta=" + escape(ruta) + "&rutaImagenAComparar=" + escape(rutaImagenAComparar),
+			type: 'GET',
+
+			success: function(data){ 
+
+				alert(data);
+			},
+			error: function(data) {
+
+				alert("Ocurrio un error calculando la distancia euclídea entre las imagenes.");
+			}
+		});
+	});
+
 
 });
 

@@ -3,7 +3,6 @@ package ar.edu.untref.ingcomputacion.infmedica.tpimagenes.servicios;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -46,9 +45,14 @@ public class Servicio {
 			try {
 
 				ImagenMedica imagenMedica = guardar(imagen, descripcion);
+				
+				administradorImagenesMedicas.guardar(ruta, imagenMedica);
+				
 				response.entity(imagenMedica.getImagenBase64());
 			} catch (IOException e) {
+				
 				response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Ocurri� un problema al guardar la imagen");
+				e.printStackTrace();
 			}
 		}
 		else {

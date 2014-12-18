@@ -1,0 +1,14 @@
+CREATE TYPE imagen AS (
+path character varying(255),
+imagenbase64 character varying(10485760),
+colorPromedio character varying(255)
+);
+
+---
+
+CREATE TABLE imagenes
+(
+id bigint NOT NULL,
+objeto imagen,
+CONSTRAINT imagen_pkey PRIMARY KEY (id )
+);

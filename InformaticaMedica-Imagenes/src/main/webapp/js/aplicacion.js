@@ -11,7 +11,7 @@ $(document).ready(function() {
 		$("#cargando").show();
 
 		$.ajax({
-			url: "http://localhost:8080/ImagenesMedicas/rest/seleccionarArchivo?ruta=" + escape(ruta) + "&descripcion=" + descripcion,
+			url: "http://localhost:8080/ImagenesMedicas/rest/seleccionarArchivo?ruta=" + escape(ruta) + "&descripcion=" + descripcion + "&guardar=true",
 			type: 'GET',
 
 			success: function(data){ 
@@ -142,6 +142,42 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	// Chequeo si esta el param
+	var name = "ruta";
+	var ruta = decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+	if (ruta != null) {
+		
+		$("#ruta").val(ruta);
+		
+		var descripcion = $("#descripcion").val();
+
+		$("#camposCargaImagen").hide();
+		$("#cargando").show();
+
+		$.ajax({
+			url: "http://localhost:8080/ImagenesMedicas/rest/seleccionarArchivo?ruta=" + escape(ruta) + "&descripcion=" + descripcion + "&guardar=false",
+			type: 'GET',
+
+			success: function(data){ 
+
+				mostrarImagenGuardada(data);
+				mostrarCodigoBase64(data);
+				mostrarColorPromedio();
+
+
+				$("#cargando").hide();
+				$("#camposImagenCargada").show();
+			},
+			error: function(data) {
+
+				$("#camposCargaImagen").show();
+				$("#cargando").hide();
+
+				alert("Ocurrio un error cargando la imagen. Compruebe la ruta y el tipo del archivo.");
+			}
+		});
+	}
 
 
 });
@@ -235,4 +271,5 @@ function mostrarHistograma(data) {
 			data: blue
 		}]
 	});
+	
 }

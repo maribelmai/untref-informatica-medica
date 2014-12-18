@@ -34,7 +34,8 @@ public class Servicio {
 
 	@Path("seleccionarArchivo")
 	@GET
-	public Response seleccionarArchivo(@QueryParam(value = "ruta") String ruta, @QueryParam(value = "descripcion") String descripcion) {
+	public Response seleccionarArchivo(@QueryParam(value = "ruta") String ruta, @QueryParam(value = "descripcion") String descripcion,
+			@QueryParam(value="guardar") boolean guardar) {
 
 		ResponseBuilder response = Response.status(Response.Status.CREATED);
 
@@ -44,9 +45,11 @@ public class Servicio {
 
 			try {
 
-				ImagenMedica imagenMedica = guardar(imagen, descripcion);
+				ImagenMedica imagenMedica = guardar(imagen, descripcion, guardar);
 				
-				administradorImagenesMedicas.guardar(ruta, imagenMedica);
+				if (guardar) {
+					administradorImagenesMedicas.guardar(ruta, imagenMedica);
+				}
 				
 				response.entity(imagenMedica.getImagenBase64());
 			} catch (IOException e) {
@@ -219,7 +222,7 @@ public class Servicio {
 		return response.build();
 	}
 
-	private ImagenMedica guardar(File imagen, String descripcion) throws IOException {
+	private ImagenMedica guardar(File imagen, String descripcion, boolean guardar) throws IOException {
 
 		ImagenMedica imagenMedica = new ImagenMedica();
 		imagenMedica.setDescripcion(descripcion);
@@ -231,7 +234,9 @@ public class Servicio {
 		fis.close();
 		imagenMedica.setImagenBase64(imagenBase64);
 
-		administradorImagenesMedicas.guardar(imagenMedica);
+		if (guardar) {
+			administradorImagenesMedicas.guardar(imagenMedica);
+		}
 		return imagenMedica;
 	}
 
